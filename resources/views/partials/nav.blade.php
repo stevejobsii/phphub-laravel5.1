@@ -1,7 +1,7 @@
   <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="{{ url('articles') }}"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;Wehero创业英雄<div class="nav-new">最新</div></a>
+      <a class="navbar-brand" href="{{ url('articles') }}"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;罗项目<div class="nav-new">最新</div></a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav hoverwhite">
