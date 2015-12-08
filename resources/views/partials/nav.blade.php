@@ -41,7 +41,7 @@
                  <a href="{{ url('tags/paishui') }}"><strong>排水系统</strong></a>
                  </li><li class="divider"></li>              
                  <li>
-                 <a href="{{ url('tags/wujin') }}"><strong>五金电机</strong></a>
+                 <a href="{{ url('tags/wujin') }}"><strong>1五金电机</strong></a>
                  </li>
                </ul>
            </li>
