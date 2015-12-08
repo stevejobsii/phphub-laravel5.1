@@ -1,12 +1,12 @@
   <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="{{ url('articles') }}"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;罗项目<div class="nav-new">最新</div></a>
+      <a class="navbar-brand" href="{{ url('articles') }}"><i class="glyphicon glyphicon-home"></i>&nbsp;&nbsp;壹建网<div class="nav-new">最新</div></a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav hoverwhite">
            <li class="dropdown">
-             <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-fire" aria-hidden="true"></i>&nbsp;&nbsp;热点<span class="caret"></span></a>
+             <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-fire" aria-hidden="true"></i>&nbsp;&nbsp;热门企业<span class="caret"></span></a>
              <ul class="dropdown-menu" role="menu">           
                <li>
                <a href="{{ url('tags/week/hot') }}"><strong>最近一周</strong></a>
@@ -15,32 +15,38 @@
                <a href="{{ url('tags/month/hot') }}"><strong>最近一月</strong></a>
                </li><li class="divider"></li> 
                <li>
-               <a href="{{ url('tags/hot') }}"><strong>历史热点</strong></a>
+               <a href="{{ url('tags/hot') }}"><strong>历史最热</strong></a>
                </li>
                </ul>
            </li>
            <li class="dropdown">
-             <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-tags" aria-hidden="true"></i>&nbsp;&nbsp;标签<span class="caret"></span></a>
-               <ul class="dropdown-menu" role="menu">           
-               <li>
-               <a href="{{ url('tags/amaze') }}"><strong>新奇图片</strong></a>
-               </li><li class="divider"></li>      
-               <li>
-               <a href="{{ url('tags/cool') }}"><strong>酷酷图片</strong></a>
-               </li><li class="divider"></li> 
-               <li>
-               <a href="{{ url('tags/cute') }}"><strong>萌萌图片</strong></a>
-               </li><li class="divider"></li> 
-               <li>
-               <a href="{{ url('tags/shy') }}"><strong>羞羞图片</strong></a>
-               </li><li class="divider"></li>                   
-               <li>
-               <a href="{{ url('tags/GIF') }}">GIF</a>
-               </li>  
+             <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-tags" aria-hidden="true"></i>&nbsp;&nbsp;企业标签<span class="caret"></span></a>
+               <ul class="dropdown-menu" role="menu"> 
+                 <li>
+                 <a href="{{ url('tags/zaojia') }}"><strong>造价咨询</strong></a>
+                 </li><li class="divider"></li>             
+                 <li>
+                 <a href="{{ url('tags/kantan') }}"><strong>勘探设计</strong></a>
+                 </li><li class="divider"></li>      
+                 <li>
+                 <a href="{{ url('tags/jixie') }}"><strong>机械设备</strong></a>
+                 </li><li class="divider"></li> 
+                 <li>
+                 <a href="{{ url('tags/jianzu') }}"><strong>建筑材料</strong></a>
+                 </li><li class="divider"></li> 
+                 <li>
+                 <a href="{{ url('tags/guandao') }}"><strong>管道系统</strong></a>
+                 </li><li class="divider"></li>   
+                 <li>
+                 <a href="{{ url('tags/paishui') }}"><strong>排水系统</strong></a>
+                 </li><li class="divider"></li>              
+                 <li>
+                 <a href="{{ url('tags/wujin') }}"><strong>五金电机</strong></a>
+                 </li>
                </ul>
            </li>
-           <li><a href="{{ url('articles/create') }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i>&nbsp;&nbsp;投稿</a></li>
-           <li><a href="{{ url('guestbook') }}"><i class="glyphicon glyphicon-comment" aria-hidden="true"></i>&nbsp;&nbsp;留言</a></li>
+           <li><a href="{{ url('articles/create') }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i>&nbsp;&nbsp;企业投稿</a></li>
+           <li><a href="{{ url('guestbook') }}"><i class="glyphicon glyphicon-comment" aria-hidden="true"></i>&nbsp;&nbsp;报价咨询</a></li>
            <li><a href="javascript:void(0)" class="dropdown-toggle" id="nav-search"><i class="glyphicon glyphicon-search" aria-hidden="true"></i>&nbsp;&nbsp;搜索<span class="caret"></span></a>
                <div class = "nav-search">
                  {!!Form::open(['method'=>'GET','class'=>'inner-addon  form-control-nav right-addon'])!!}

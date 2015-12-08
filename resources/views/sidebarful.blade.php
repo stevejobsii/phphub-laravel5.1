@@ -33,8 +33,8 @@
 		</div><br>
 	    <div class = "width100">
 		        <ul class="hot-tabs bule-line-top">	    
-				<li id="tab-votes" class = "current" >热门投票</li>
-				<li id="tab-replies" class ="hot_tab_last">热门评论</li>
+				<li id="tab-votes" class = "current" >企业排名</li>
+				<li id="tab-replies" class ="hot_tab_last">热门评价</li>
 			    </ul>
 		    <div class="clearfix"></div>
 	        
