@@ -48,6 +48,7 @@
         <span>&nbsp; • &nbsp;</span>{{$article->reply_count}}互动
         <span>&nbsp; • &nbsp;</span>{{$article->view_count}}观摩
         </strong></h5>
+        <div class="show-body">内容：{{ $article->body }} </div>
         </div><!-- width480 -->
 
             <div class="width480 btn-vote-reply votebookmark">

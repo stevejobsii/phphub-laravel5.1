@@ -17,6 +17,11 @@
   </div>
     
     <div class="form-group">
+    {!! Form::label('body', '内容') !!}<span class="error">*</span>
+    {!! Form::textarea('body', null, ['class'=>'form-control']) !!}
+    </div>
+
+    <div class="form-group">
         {!! Form::label('tag_list', '标签') !!}
         {!! Form::select('tag_list[]', $tags, null, ['id' => 'tag_list', 'class' => 'form-control', 'multiple']) !!}
     </div>
