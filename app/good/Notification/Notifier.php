@@ -1,35 +1,68 @@
 <?php namespace App\good\Notification;
 
 use App\good\Notification\Mention;
-use Reply;
+use App\Reply;
 use Auth;
-use Topic;
-use Notification;
-use Carbon;
-use User;
+use App\Topic;
+use App\Notification;
+use Carbon\Carbon;
+use App\User;
+use App\Append;
 
 //input
+
 class Notifier
 {
     public $notifiedUsers = [];
-    //after user  
-    public function newReplyNotify( $fromUser, Mention $mentionParser,  $article,  $reply)
+
+    public function newReplyNotify(User $fromUser, Mention $mentionParser, Topic $topic, Reply $reply)
     {
         // Notify the author
-        App('App\Notification')->batchNotify(
-                    'new_reply',//type
+        Notification::batchNotify(
+                    'new_reply',
                     $fromUser,
-                    $this->removeDuplication([$article->user]),
-                    $article,
+                    $this->removeDuplication([$topic->user]),
+                    $topic,
                     $reply);
 
-        //Notify mentioned users @回复评论者
-        App('App\Notification')->batchNotify(
+        // Notify attented users
+        Notification::batchNotify(
+                    'attention',
+                    $fromUser,
+                    $this->removeDuplication($topic->attentedBy),
+                    $topic,
+                    $reply);
+
+        // Notify mentioned users
+        Notification::batchNotify(
                     'at',
                     $fromUser,
                     $this->removeDuplication($mentionParser->users),
-                    $article,
+                    $topic,
                     $reply);
+    }
+
+    public function newAppendNotify(User $fromUser, Topic $topic, Append $append)
+    {
+        $users = $topic->replies()->with('user')->get()->lists('user');
+
+        // Notify commented user
+        Notification::batchNotify(
+                    'comment_append',
+                    $fromUser,
+                    $this->removeDuplication($users),
+                    $topic,
+                    null,
+                    $append->content);
+
+        // Notify attented users
+        Notification::batchNotify(
+                    'attention_append',
+                    $fromUser,
+                    $this->removeDuplication($topic->attentedBy),
+                    $topic,
+                    null,
+                    $append->content);
     }
 
     // in case of a user get a lot of the same notification

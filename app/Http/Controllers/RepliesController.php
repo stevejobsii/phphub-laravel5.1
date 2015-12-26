@@ -1,85 +1,61 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
+use App\good\Core\CreatorListener;
+use App\good\Creators\ReplyCreator;
+use Input;
+use Redirect;
 use App\Reply;
-use App\Article;
-use App\Vote;
-use App\Http\Controllers\Controller;
-use Auth;
-use Carbon\Carbon;
-use Illuminate\HttpResponse;
-use Illuminate\Http\Request;
-use Intervention\Image\ImageManagerStatic as Image;
-use App\Http\Requests\ReplyRequest;
-use App\good\Notification\Mention;
 
-class RepliesController extends Controller
+class RepliesController extends Controller implements CreatorListener
 {
-    protected $mentionParser;
-
-    public function __construct(Mention $mentionParser)
+    public function __construct()
     {
-        $this->middleware('auth', ['except' => ['upvote']]);
-        $this->mentionParser = $mentionParser;
-    }
-    //回复需要填写body,最重要的store功能
-    public function store(ReplyRequest $request)
-    {
-        //save reply
-        $request['user_id'] = Auth::id();
-        $request['body'] = $this->mentionParser->parse($request['body']);
-        //return  $request['body'];   
-        $reply = Reply::create($request->all());
-        //reply count＋1
-        $article = Article::find($request['article_id']);
-        $article->reply_count++;
-        $article->updated_at = Carbon::now();
-        $article->save();
-        //通知  after user  
-        App('App\good\Notification\Notifier')->newReplyNotify(Auth::user(), $this->mentionParser, $article, $reply);
-        return  back();
+       $this->middleware('auth');
     }
 
-    public function upvote($id,Request $request)
+    public function store()
     {
-        //upvote reply
+        return app('App\good\Creators\ReplyCreator')->create($this, Input::except('_token'));
+    }
+
+    public function vote($id)
+    {
         $reply = Reply::find($id);
-        //notify commenter
-        if (Auth::check()){
-            App('App\Notification')->notify('reply_upvote', Auth::user(), $reply->user, $reply->article, $reply);
-            if ($reply->votes()->ByWhom(Auth::id())->count()) {
-                // click twice for remove upvote
-            $reply->votes()->ByWhom(Auth::id())->delete();
-            $reply->decrement('vote_count', 1);
-            $reply->article()->decrement('vote_count', 1);
-            } else {
-                // first time click
-            $reply->votes()->create(['user_id' => Auth::id()]);
-            $reply->increment('vote_count', 1);
-            $reply->article()->increment('vote_count', 1);
-            }
-        }else{//匿名投票
-            App('App\Notification')->nonamenotify('reply_upvote', $reply->user, $reply->article, $reply);
-            if ($reply->votes()->ByWhom($request->ip())->count()) {
-            $reply->votes()->ByWhom($request->ip())->delete();
-            $reply->decrement('vote_count', 1);
-            } else {
-            $reply->votes()->create(['user_id' => $request->ip()]);
-            $reply->increment('vote_count', 1);
-            }
-        }
-        return $reply->vote_count;
+        app('App\good\Vote\Voter')->replyUpVote($reply);
+        return Redirect::route('topics.show', [$reply->topic_id, '#reply'.$reply->id]);
     }
 
     public function destroy($id)
     {
-        //destroy reply
-        $reply = \App\Reply::findOrFail($id);
-        //权限
+        $reply = Reply::findOrFail($id);
         $this->authorOrAdminPermissioinRequire($reply->user_id);
-        $reply->article->decrement('reply_count', 1);
-        //delete Vote 
-        $reply->votes()->delete();
         $reply->delete();
-        return redirect('articles/'. $reply->article->photo);
+
+        $reply->topic->decrement('reply_count', 1);
+
+        Flash::success(lang('Operation succeeded.'));
+
+        $reply->topic->generateLastReplyUserInfo();
+
+        return Redirect::route('topics.show', $reply->topic_id);
+    }
+
+    /**
+     * ----------------------------------------
+     * CreatorListener Delegate
+     * ----------------------------------------
+     */
+
+    public function creatorFailed($errors)
+    {
+        flash()->success(lang('Operation failed.'),'失败发布');
+        return Redirect::back();
+    }
+
+    public function creatorSucceed($reply)
+    {
+        flash()->success(lang('Operation succeeded.'),'成功发布');
+        return Redirect::route('topics.show', array(Input::get('topic_id'), '#reply'.$reply->id));
     }
 }

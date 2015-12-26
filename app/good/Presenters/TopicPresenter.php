@@ -1,4 +1,5 @@
-<?php namespace Phphub\Presenters;
+<?php 
+namespace App\good\Presenters;
 
 use Laracasts\Presenter\Presenter;
 use Input;
@@ -26,7 +27,7 @@ class TopicPresenter extends Presenter
 
         return 'href="' . $link . '"' . $selected;
     }
-    //4种filter
+
     public function getTopicFilter()
     {
         $filters = ['noreply', 'vote', 'excellent','recent'];

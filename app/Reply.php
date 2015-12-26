@@ -1,4 +1,5 @@
-<?php namespace App;
+<?php
+namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
@@ -7,41 +8,38 @@ class Reply extends Model
     protected $fillable = [
         'body',
         'user_id',
-        'article_id',
-        // 'body_original',
+        'topic_id',
+        'body_original',
     ];
 
     public static function boot()
     {
         parent::boot();
 
- 
+        static::created(function ($topic) {
+            SiteStatus::newReply();
+        });
     }
-    
-    // public function replyvote()
-    // {
-    //     return Vote::where('votable', '=', 'App\Reply')->where('votable_id', '=', $this->id)->get();
-    // }
+
     public function votes()
     {
-        return $this->morphMany('App\Vote', 'votable');
+        return $this->morphMany('\App\Vote', 'votable');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User','user_id');//加了'user_id',818
+        return $this->belongsTo('\App\User');
     }
 
-    public function article()
+    public function topic()
     {
-        return $this->belongsTo('App\Article','article_id');
+        return $this->belongsTo('\App\Topic');
     }
 
     public function scopeWhose($query, $user_id)
     {
-        return $query->where('user_id', '=', $user_id);
+        return $query->where('user_id', '=', $user_id)->with('topic');
     }
-
 
     public function scopeRecent($query)
     {

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Validator;
 use Auth;
+use Input;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Intervention\Image\ImageManagerStatic as Image;
+use App\SiteStatus;
 
 class AuthController extends Controller
 {
@@ -26,7 +28,7 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
     //注册后返回主页
-    protected $redirectPath = '/articles';
+    protected $redirectPath = '/';
     /**
      * Create a new authentication controller instance.
      *
@@ -60,6 +62,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
+        SiteStatus::newUser();
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -85,17 +88,47 @@ class AuthController extends Controller
     // }
 
     public function callback($provider) {
-        $oauthUser = \Socialite::with($provider)->user();
-        if (is_null($user = User::where('name', '=', $oauthUser->nickname)->first())){
-        $user = User::create([
-            'name' => $oauthUser->nickname,
-            'email'=> $oauthUser->email,
-            'avatar'=>$oauthUser->avatar,
-        ]);
+        if (Input::has('code')) {
+            $oauthUser = \Socialite::with($provider)->user();
+            if (is_null($user = User::where('name', '=', $oauthUser->nickname)->first())){
+            $user = User::create([
+                'name' => $oauthUser->nickname,
+                'email'=> $oauthUser->email,
+                'avatar'=>$oauthUser->avatar,
+            ]);
+            }
+            Auth::login($user,true);
         }
-        Auth::login($user,true);
-        return redirect('articles');
+        return redirect('');
     }
+    
+    //需要登录／管理员／用户被禁
+    public function loginRequired()
+    {
+        return view('auth.loginrequired');
+    }
+
+    public function adminRequired()
+    {
+        return view('auth.adminrequired');
+    }
+     
+    public function userBanned()
+    {
+        if (Auth::check() && !Auth::user()->is_banned) {
+            return Redirect::route('home');
+        }
+        //force logout
+        Auth::logout();
+        return view('auth.userbanned');
+    }
+
+    // 用户屏蔽
+    public function userIsBanned($user)
+    {
+        return Redirect::route('user-banned');
+    }
+
 }
 
 

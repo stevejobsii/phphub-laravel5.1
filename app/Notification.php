@@ -1,36 +1,43 @@
-<?php namespace App;
+<?php
+namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 use Laracasts\Presenter\PresentableTrait;
+use App\good\Core\Jpush;
 use Carbon\Carbon;
+use App\User;
+use App\Topic;
 
-class Notification extends \Eloquent
+class Notification extends Model
 {
     use PresentableTrait;
-    public $presenter = 'App\good\Presenters\NotificationPresenter';
+    public $presenter = '\App\good\Presenters\NotificationPresenter';
+
+    //private static $jpush = null;
 
     // Don't forget to fill this array
     protected $fillable = [
             'from_user_id',
             'user_id',
-            'article_id',
+            'topic_id',
             'reply_id',
             'body',
             'type'
             ];
-    //这些notification输入1个user
+
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('\App\User');
     }
-    
-    public function article()
+
+    public function topic()
     {
-        return $this->belongsTo('App\Article');
+        return $this->belongsTo('\App\Topic');
     }
-    //一个user有很多通知,notification属于一个user
+
     public function fromUser()
     {
-        return $this->belongsTo('App\User', 'from_user_id');
+        return $this->belongsTo('\App\User', 'from_user_id');
     }
 
     /**
@@ -42,21 +49,17 @@ class Notification extends \Eloquent
      * @param  Reply  $reply    the content
      * @return [type]           none
      */
-    //noti reply 2people auther/@User
-    public static function batchNotify($type, User $fromUser, $users, Article $article, Reply $reply = null, $content = null)
+    public static function batchNotify($type, User $fromUser, $users, Topic $topic, Reply $reply = null, $content = null)
     {
         $nowTimestamp = Carbon::now()->toDateTimeString();
         $data = [];
 
         foreach ($users as $toUser) {
-            // if ($fromUser->id == $toUser->id) {
-            //     continue;
-            // }自己不通知自己
 
             $data[] = [
                 'from_user_id' => $fromUser->id,
                 'user_id'      => $toUser->id,
-                'article_id'   => $article->id,
+                'topic_id'     => $topic->id,
                 'reply_id'     => $content ?: $reply->id,
                 'body'         => $content ?: $reply->body,
                 'type'         => $type,
@@ -70,67 +73,109 @@ class Notification extends \Eloquent
         if (count($data)) {
             Notification::insert($data);
         }
+
+        foreach ($data as $value) {
+            self::pushNotification($value);
+        }
     }
 
-    //noti auther,main vote
-    public static function notify($type, User $fromUser, User $toUser, Article $article, Reply $reply = null)
+    public function scopeRecent($query)
+    {
+        return $query->orderBy('created_at', 'desc');
+    }
+
+    public static function notify($type, User $fromUser, User $toUser, Topic $topic, Reply $reply = null)
     {
 
-        // if ($fromUser->id == $toUser->id) {
-        //     return;
-        // }自己不通知自己
-        
-        if (Notification::isNotified($fromUser->id, $toUser->id, $article->id, $type)) {
+        if (Notification::isNotified($fromUser->id, $toUser->id, $topic->id, $type)) {
             return;
         }
-       
+
         $nowTimestamp = Carbon::now()->toDateTimeString();
-        $data[] = [
+
+
+        $data = [
             'from_user_id' => $fromUser->id,
             'user_id'      => $toUser->id,
-            'article_id'   => $article->id,
+            'topic_id'     => $topic->id,
             'reply_id'     => $reply ? $reply->id : 0,
             'body'         => $reply ? $reply->body : '',
             'type'         => $type,
             'created_at'   => $nowTimestamp,
             'updated_at'   => $nowTimestamp
-        ];       
-        $toUser->increment('notification_count', 1);
-        Notification::insert($data);
-        
-    }
-    //匿名vote
-    public static function nonamenotify($type,User $toUser, Article $article, Reply $reply = null)
-    {
+        ];
 
-        // if ($fromUser->id == $toUser->id) {
-        //     return;
-        // }自己不通知自己
-        
-        if (Notification::isNotified(null, $toUser->id, $article->id, $type)) {
-            return;
-        }
-       
-        $nowTimestamp = Carbon::now()->toDateTimeString();
-        $data[] = [
-            'user_id'      => $toUser->id,
-            'article_id'   => $article->id,
-            'reply_id'     => $reply ? $reply->id : 0,
-            'body'         => $reply ? $reply->body : '',
-            'type'         => $type,
-            'created_at'   => $nowTimestamp,
-            'updated_at'   => $nowTimestamp
-        ];       
         $toUser->increment('notification_count', 1);
-        Notification::insert($data);
-        
+
+        Notification::insert([$data]);
+        self::pushNotification($data);
     }
-    
-    public static function isNotified($from_user_id, $user_id, $article_id, $type)
+
+    public static function pushNotification($data)
+    {
+        $notification = Notification::query()
+                ->with('fromUser', 'topic')
+                ->where($data)
+                ->first();
+
+        if(!$notification){return;}
+
+        $from_user_name = $notification->fromUser->name;
+        $topic_title    = $notification->topic->title;
+        
+        $msg = $from_user_name 
+                . ' • ' . $notification->present()->lableUp()
+                . ' • ' . $topic_title;
+        
+        $push_data = array_only($data, [
+            'topic_id',
+            'from_user_id',
+            'type',
+        ]);
+
+        if ($data['reply_id'] !== 0) {
+            $push_data['reply_id']    = $data['reply_id'];
+            // $push_data['replies_url'] = route('replies.web_view', $data['reply_id']);
+        }
+
+        //self::jpush($notification->user_id, $msg, $push_data);
+    }
+
+    /**
+     * 推送消息.
+     *
+     * @param $user_ids
+     * @param $msg
+     * @param $extras
+     */
+    protected static function jpush($user_ids, $msg, $extras = null)
+    {
+        if (!self::$jpush) {
+            self::$jpush = new Jpush();
+        }
+
+        $user_ids = (array) $user_ids;
+        $user_ids = array_map(function ($user_id) {
+            return 'userid_'.$user_id;
+        }, $user_ids);
+
+        try {
+            self::$jpush
+                ->platform('all')
+                ->message($msg)
+                ->toAlias($user_ids)
+                ->extras($extras)
+                ->send();
+        } catch (Exception $e) {
+            // Ignore
+        }
+    }
+
+    public static function isNotified($from_user_id, $user_id, $topic_id, $type)
     {
         $notifys = Notification::fromwhom($from_user_id)
                         ->toWhom($user_id)
-                        ->atTopic($article_id)
+                        ->atTopic($topic_id)
                         ->withType($type)->get();
         return $notifys->count();
     }
@@ -150,13 +195,8 @@ class Notification extends \Eloquent
         return $query->where('type', '=', $type);
     }
 
-    public function scopeAtTopic($query, $article_id)
+    public function scopeAtTopic($query, $topic_id)
     {
-        return $query->where('article_id', '=', $article_id);
-    }
-
-    public function scopeRecent($query)
-    {
-        return $query->orderBy('created_at', 'desc');
+        return $query->where('topic_id', '=', $topic_id);
     }
 }

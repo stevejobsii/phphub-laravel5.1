@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0f021aba3ce72595cd03e68d8491cb23",
-    "content-hash": "fb91a6ce609e4d7e724699687357ae55",
+    "hash": "4df1b60ba41141f62dd5d9208fa80022",
+    "content-hash": "4aba0cf484822cc6d558920ac4ebe3bc",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -216,6 +216,50 @@
                 "string"
             ],
             "time": "2015-11-06 14:35:42"
+        },
+        {
+            "name": "ezyang/htmlpurifier",
+            "version": "v4.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ezyang/htmlpurifier.git",
+                "reference": "ae1828d955112356f7677c465f94f7deb7d27a40"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/ae1828d955112356f7677c465f94f7deb7d27a40",
+                "reference": "ae1828d955112356f7677c465f94f7deb7d27a40",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "HTMLPurifier": "library/"
+                },
+                "files": [
+                    "library/HTMLPurifier.composer.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Edward Z. Yang",
+                    "email": "admin@htmlpurifier.org",
+                    "homepage": "http://ezyang.com"
+                }
+            ],
+            "description": "Standards compliant HTML filter written in PHP",
+            "homepage": "http://htmlpurifier.org/",
+            "keywords": [
+                "html"
+            ],
+            "time": "2015-08-05 01:03:42"
         },
         {
             "name": "guzzle/guzzle",
@@ -1049,6 +1093,70 @@
             "time": "2015-09-30 22:26:59"
         },
         {
+            "name": "league/html-to-markdown",
+            "version": "4.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/html-to-markdown.git",
+                "reference": "01bbfe039d9b97526e3f3a3ee32543fc1d8dba00"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/html-to-markdown/zipball/01bbfe039d9b97526e3f3a3ee32543fc1d8dba00",
+                "reference": "01bbfe039d9b97526e3f3a3ee32543fc1d8dba00",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-xml": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mikehaertl/php-shellcommand": "~1.1.0",
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "bin": [
+                "bin/html-to-markdown"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\HTMLToMarkdown\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Colin O'Dell",
+                    "email": "colinodell@gmail.com",
+                    "homepage": "http://www.colinodell.com",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Nick Cernis",
+                    "email": "nick@cern.is",
+                    "homepage": "http://modernnerd.net",
+                    "role": "Original Author"
+                }
+            ],
+            "description": "An HTML-to-markdown conversion helper for PHP",
+            "homepage": "https://github.com/thephpleague/html-to-markdown",
+            "keywords": [
+                "html",
+                "markdown"
+            ],
+            "time": "2015-11-20 16:20:25"
+        },
+        {
             "name": "league/oauth1-client",
             "version": "1.6.1",
             "source": {
@@ -1110,6 +1218,65 @@
                 "twitter"
             ],
             "time": "2015-10-23 04:02:07"
+        },
+        {
+            "name": "mews/purifier",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mewebstudio/Purifier.git",
+                "reference": "83dd3c9403ab732147c6c030a297f19e442d0534"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mewebstudio/Purifier/zipball/83dd3c9403ab732147c6c030a297f19e442d0534",
+                "reference": "83dd3c9403ab732147c6c030a297f19e442d0534",
+                "shasum": ""
+            },
+            "require": {
+                "ezyang/htmlpurifier": "4.7.*",
+                "illuminate/config": "~5.1",
+                "illuminate/filesystem": "~5.1",
+                "laravel/framework": "~5.1",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Mews\\Purifier\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Muharrem ERİN",
+                    "email": "me@mewebstudio.com",
+                    "homepage": "https://github.com/mewebstudio",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel 5 HtmlPurifier Package",
+            "homepage": "https://github.com/mewebstudio/purifier",
+            "keywords": [
+                "Purifier",
+                "htmlpurifier",
+                "laravel5 HtmlPurifier",
+                "laravel5 Purifier",
+                "laravel5 Security",
+                "security",
+                "xss"
+            ],
+            "time": "2015-08-31 13:25:43"
         },
         {
             "name": "monolog/monolog",
@@ -1231,6 +1398,38 @@
                 "schedule"
             ],
             "time": "2015-01-11 23:07:46"
+        },
+        {
+            "name": "naux/auto-correct",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NauxLiu/auto-correct.git",
+                "reference": "eb05777b4bc4019c776bf81983ae46c35e597929"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NauxLiu/auto-correct/zipball/eb05777b4bc4019c776bf81983ae46c35e597929",
+                "reference": "eb05777b4bc4019c776bf81983ae46c35e597929",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Naux\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "NauxLiu",
+                    "email": "nauxliu@gmail.com"
+                }
+            ],
+            "time": "2015-11-27 03:39:36"
         },
         {
             "name": "nesbot/carbon",

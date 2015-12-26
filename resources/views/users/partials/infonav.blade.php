@@ -1,21 +1,19 @@
-
-<div class="avatar-container">
-    <img src="{{$user->avatar}}" id="avatar">
-</div>
-
-
-<br><br><br><br><br><h5 style="text-align: center;">{{$user->name}}的收藏<small>（{{$user->title}}）</small></h5>
-<h5 style="text-align: center;"><small>个人简介：{{$user->info}}</small></h5>
-
 <ul class="nav nav-tabs user-info-nav" role="tablist">
-  <li class="{{ $user->present()->userinfoNavActive('users.articles') }}">
-  	<a href="{{ route('users.articles', $user->id) }}" >上传</a>
+  <li class="{!! $user->present()->userinfoNavActive('users.show') !!}">
+  	<a href="{!! route('users.show', $user->id) !!}" >{!! lang('Basic Info') !!}</a>
   </li>
-  <li class="{{ $user->present()->userinfoNavActive('users.replies') }}">
-  	<a href="{{ route('users.replies', $user->id) }}" >评论</a>
+  <li class="{!! $user->present()->userinfoNavActive('users.replies') !!}">
+  	<a href="{!! route('users.replies', $user->id) !!}" >{!! lang('Replies') !!}</a>
   </li>
-  <li class="{{ $user->present()->userinfoNavActive('users.upvotes') }}">
-  	<a href="{{ route('users.upvotes', $user->id) }}" >点赞</a>
+  <li class="{!! $user->present()->userinfoNavActive('users.topics') !!}">
+  	<a href="{!! route('users.topics', $user->id) !!}" >{!! lang('Topics') !!}</a>
   </li>
+  <li class="{!! $user->present()->userinfoNavActive('users.favorites') !!}">
+  	<a href="{!! route('users.favorites', $user->id) !!}" >{!! lang('Favorites') !!}</a>
+  </li>
+  @if(Auth::check() && Auth::id() == $user->id)
+  <li class="{!! $user->present()->userinfoNavActive('users.access_tokens') !!}">
+    <a href="{!! route('users.access_tokens', $user->id) !!}" >{!! lang('Access Tokens') !!}</a>
+  </li>
+  @endif
 </ul>
-<br><br>

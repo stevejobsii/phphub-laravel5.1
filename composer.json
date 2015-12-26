@@ -1,13 +1,5 @@
 {
-    "repositories": [
-        {   
-            "packagist": false
-        },  
-        {   
-            "type": "composer", 
-            "url": "http://packagist.cn"
-        }   
-    ],
+    
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
@@ -24,7 +16,10 @@
         "socialiteproviders/qq": "^1.1",
         "socialiteproviders/weixin": "^1.0",
         "socialiteproviders/weibo": "^1.0",
-        "socialiteproviders/weixin-web": "^1.0"
+        "socialiteproviders/weixin-web": "^1.0",
+        "mews/purifier": "^2.0",
+        "league/html-to-markdown": "^4.1",
+        "naux/auto-correct": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
