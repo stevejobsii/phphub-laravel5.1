@@ -18,7 +18,7 @@
 						</div>
 					@endif
       
-					<label class="col-md-4 control-label" style = "padding-top:35px;text-align: right;">使用社交登录</label>
+					<label class="col-md-4 control-label" style = "padding-top:26px;text-align: right;">使用社交登录</label>
                     <div class="col-md-6">
 						<ul class="oauth-wrap">
 			              <li style="height:50px;"><a href="/auth/qq"><i class ="iconfont icon-qq" style="font-size: 50px;"></i></a></li>

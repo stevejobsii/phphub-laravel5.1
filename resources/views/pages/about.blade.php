@@ -12,12 +12,12 @@
         <div class="markdown-body" id="emojify">
 
 
-<h1 id="toc_0">关于 PHPHub</h1>
+<h1 id="toc_0">关于 沉香论坛</h1>
 
 <h2 id="toc_1">说明</h2>
 
-<p>PHPHub 是积极向上的 PHP &amp; Laravel 开发者社区</p>
-<p>我们是一个公益组织, 致力于推动 Laravel, php-fig 等国外 PHP 新技术, 新理念在中国的发展.</p>
+<p>沉香论坛 是积极向上的社区</p>
+<p>我们是一个公益组织, 致力于推动    等国外   新技术, 新理念在中国的发展.</p>
 
 <p>在这里没有商业广告, 没有灌水, 没有千篇一律新手问答, 有的是关于新技术的讨论和分享. </p>
 
@@ -47,7 +47,6 @@
 <li>热爱开源, 尊重开源;</li>
 <li>热爱技术, 为最新最潮的技术狂热;</li>
 <li>热爱学习, 热爱互联网;</li>
-<li>热爱 PHP &amp; Laravel;</li>
 </ul>
 
 <h3 id="toc_5">在这里我们可以</h3>
@@ -76,10 +75,10 @@
 
 <h2 id="toc_7">Laravel?</h2>
 
-<p>为什么是 Laravel? 为什么不是 CI, Symfony, CakePHP, ThinkPHP ... </p>
+<p>为什么是  ? 为什么不是  </p>
 
 <blockquote>
-<p>Because Laravel is amazing and It is the future.</p>
+<p>Because         is amazing and It is the future.</p>
 </blockquote>
 
 <p><a href="http://www.zhihu.com/question/19558755/answer/23062110">知乎上的答案 - 最好的 PHP 框架是什么？为什么？</a></p>
