@@ -2,7 +2,7 @@
   <div class="container">
     <div class="navbar-header">
 
-      <a href="/" class="navbar-brand">沉香论坛</a>
+      <a href="/" class="navbar-brand">沉香</a>
     </div>
     <div id="top-navbar-collapse" class="navbar-collapse">
       <ul class="nav navbar-nav">
@@ -44,7 +44,7 @@
           @else
               
               <a href="{!! url('auth/login') !!}" class="btn btn-info" id="login-btn">
-                <i class="fa fa-github-alt"></i>
+                <i class="fa fa-coffee"></i>
                 {!! lang('Login') !!}
               </a>
           @endif

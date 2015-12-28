@@ -17,7 +17,7 @@
         <div class="col-md-1 remove-padding-right">
             <div class="avatar">
               <a href="{{ route('users.show', $user->id) }}" class="users-index-{{ $user->id }}">
-                <img src="{{ $user->present()->gravatar }}" class="img-thumbnail avatar"  style="width:48px;height:48px;margin-bottom: 20px;"/>
+                <img src="{{ $user->present()->avatar_30 }}" class="img-thumbnail avatar"  style="width:48px;height:48px;margin-bottom: 20px;"/>
               </a>
             </div>
         </div>

@@ -24,7 +24,6 @@
 
     <div class="panel panel-default">
       @include('users.partials.infonav', ['current' => 'basicinfo'])
-
     </div>
 
     <div class="panel panel-default">

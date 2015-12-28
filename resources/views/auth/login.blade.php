@@ -32,14 +32,14 @@
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
-							<label class="col-md-4 control-label"style = "padding-top:24px;">或使用邮箱登录</label>
+							<label class="col-md-4 control-label"style = "padding-top:5px;">或使用邮箱登录</label>
 							<div class="col-md-6">
 								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label class="col-md-4 control-label"style = "padding-top:24px;">密码</label>
+							<label class="col-md-4 control-label"style = "padding-top:5px;">密码</label>
 							<div class="col-md-6">
 								<input type="password" class="form-control" placeholder="密码（1位或以上）" name="password">
 							</div>
